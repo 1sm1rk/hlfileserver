@@ -1,0 +1,8 @@
+/home/sm1rk/projekte/javaws/hlfileserver/src/main/java/de/homelabs/hlfileserver/HlfileserverApplication.java
+/home/sm1rk/projekte/javaws/hlfileserver/src/main/java/de/homelabs/hlfileserver/entity/FSElement.java
+/home/sm1rk/projekte/javaws/hlfileserver/src/main/java/de/homelabs/hlfileserver/entity/FSErrorCode.java
+/home/sm1rk/projekte/javaws/hlfileserver/src/main/java/de/homelabs/hlfileserver/entity/FSResult.java
+/home/sm1rk/projekte/javaws/hlfileserver/src/main/java/de/homelabs/hlfileserver/entity/FileserverProperties.java
+/home/sm1rk/projekte/javaws/hlfileserver/src/main/java/de/homelabs/hlfileserver/service/FileserverFactory.java
+/home/sm1rk/projekte/javaws/hlfileserver/src/main/java/de/homelabs/hlfileserver/service/FileserverFilesystemService.java
+/home/sm1rk/projekte/javaws/hlfileserver/src/main/java/de/homelabs/hlfileserver/service/FileserverService.java
