@@ -1,0 +1,89 @@
+@startuml
+package Fileserver {
+	class FileserverProperties {
+		+String basePath;
+	}
+	
+	class FileserverFactory {
+		{static} +FilserverService createInstance(FileserverProperties props)
+	}
+	
+	interface FileserverService {
+		#FileserverService(FileserverProperties props
+		+FSResult createDirectory(String directory)
+		+FSResult renameDirectory(String directoryOld, String directoryNew)
+		+FSResult deleteDirectory(String directory)
+		+FSResult createFile(String file)
+		+FSResult renameFile(String fileOld, String fileNew)
+		+FSResult deleteFile(String file)
+		
+		+FSElementResult listDirectory(String directory)
+		+byte[] getFileContent(String file)
+	}
+	
+	class FSResult {
+		-boolean ok
+		-String error
+		-FSErrorCode errorCode
+		-FSResult(boolean ok, String error, FSErrorCode errorCode)
+		{static} FSResult ok()
+		{static} FSResult error(String error, FSErrorCode errorCode)
+	}
+	
+	enum FSErrorCode {
+		OK, GENERAL
+	}
+	
+	class FSElementResult {
+		-List<FSElement> elements
+		+List<FSElement> elements()
+	}
+	
+	class FSElement {
+		-String name
+		-long created
+		-long modified
+		-boolean global
+		-boolean directory
+		-int uid
+		-int gid
+		
+		+String getName()
+		+long getCreated()
+		+long getModified()
+		+boolean isGlobal()
+		+boolean isDirectory()
+		+int getUID()
+		+int getGID()
+	}
+	
+	FileserverFactory -- FileserverService
+	FileserverService -- FSResult
+	FileserverService -- FSElementResult	
+	FileserverFactory -- FileserverProperties
+	FileserverService -- FileserverProperties
+	FSElementResult -- FSElement
+	FSResult -- FSErrorCode
+}
+
+package FilesystemProvider {
+	FileserverFilesystemService ..|> FileserverService
+	FileserverFilesystemService -- FileserverProperties
+	
+	class FileserverFilesystemService {
+		-FileserverProperties props
+		#FileserverFilesystemService(FileserverProperties props)
+		
+		+FSResult createDirectory(String directory)
+		+FSResult renameDirectory(String directoryOld, String directoryNew)
+		+FSResult deleteDirectory(String directory)
+		+FSResult createFile(String file)
+		+FSResult renameFile(String fileOld, String fileNew)
+		+FSResult deleteFile(String file)
+		
+		+FSElementResult listDirectory(String directory)
+		+byte[] getFileContent(String file)	
+	}
+}
+
+@enduml
