@@ -18,7 +18,9 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import de.homelabs.hlfileserver.entity.FSDirectoryResult;
 import de.homelabs.hlfileserver.entity.FSElement;
+import de.homelabs.hlfileserver.entity.FSErrorCode;
 import de.homelabs.hlfileserver.entity.FSResult;
 import de.homelabs.hlfileserver.entity.FileserverProperties;
 
@@ -79,21 +81,19 @@ public class FileserverFilesystemService implements FileserverService {
 	}
 
 	@Override
-	public List<FSElement> listDirectory(String directory) {
-		// TODO Auto-generated method stub
+	public FSDirectoryResult listDirectory(String directory) {
 		List<FSElement> elements = new ArrayList<FSElement>();
-		//elements.add(new FSElement("test", 0, 0, false, false, 0, 0));
 		
 		try {
 			readLock.lock();
 			Path path = fs.getPath(props.basePath()+directory);
-			log.info("Path:"+path.toString());
-			log.info("Parent:"+path.getParent());
-			log.info("Root:"+path.getRoot());
+			log.debug("Path:"+path.toString());
+			log.debug("Parent:"+path.getParent());
+			log.debug("Root:"+path.getRoot());
 			
 			
 			Files.list(path).forEach(element -> {
-				log.info(""+element);
+				log.debug(""+element);
 				
 				BasicFileAttributeView bv = Files.getFileAttributeView(element,BasicFileAttributeView.class);
 				BasicFileAttributes attr = null;
@@ -117,19 +117,20 @@ public class FileserverFilesystemService implements FileserverService {
 			});
 			
 		} catch (IOException err) {
-			log.error(err.getLocalizedMessage());
+			log.error(err.toString());
+			
+			return FSDirectoryResult.error(err.toString(), FSErrorCode.INVALIDPATH);
 		}		
 		finally {
 			readLock.unlock();
 		}
 		
 		//sort liste
-		//wie die reihenfolge??
-		Comparator<FSElement> comp = Comparator.comparing(FSElement::isDirectory)
+		Comparator<FSElement> comp = Comparator.comparing(FSElement::isDirectory).reversed()
 			      .thenComparing(FSElement::getName);
 				
 		Collections.sort(elements, comp);
-		return elements;
+		return FSDirectoryResult.ok(elements);
 	}
 
 }

@@ -5,7 +5,7 @@ public class FSResult {
 	public String error;
 	public FSErrorCode errorCode;
 	
-	private FSResult(boolean ok, String error, FSErrorCode errorCode) {
+	protected FSResult(boolean ok, String error, FSErrorCode errorCode) {
 		this.ok = ok;
 		this.error = error;
 		this.errorCode = errorCode;

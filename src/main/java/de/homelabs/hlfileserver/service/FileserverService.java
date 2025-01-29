@@ -1,8 +1,6 @@
 package de.homelabs.hlfileserver.service;
 
-import java.util.List;
-
-import de.homelabs.hlfileserver.entity.FSElement;
+import de.homelabs.hlfileserver.entity.FSDirectoryResult;
 import de.homelabs.hlfileserver.entity.FSResult;
 
 public interface FileserverService {
@@ -13,6 +11,6 @@ public interface FileserverService {
 	FSResult renameFile(String fileOld, String fileNew);
 	FSResult deleteFile(String file);
 			
-	List<FSElement> listDirectory(String directory);
+	FSDirectoryResult listDirectory(String directory);
 	byte[] getFileContent(String file);
 }
