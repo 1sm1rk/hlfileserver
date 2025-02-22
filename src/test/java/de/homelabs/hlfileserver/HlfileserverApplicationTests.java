@@ -12,6 +12,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import de.homelabs.hlfileserver.entity.FSDirectoryResult;
 import de.homelabs.hlfileserver.entity.FSElement;
+import de.homelabs.hlfileserver.entity.FSResult;
 import de.homelabs.hlfileserver.entity.FileserverProperties;
 import de.homelabs.hlfileserver.service.FileserverFactory;
 import de.homelabs.hlfileserver.service.FileserverService;
@@ -49,4 +50,35 @@ class HlfileserverApplicationTests {
 		assertEquals("pom.xml",element);
 	}
 
+	@Test
+	void testFilesServerActions() {
+		//Basic 
+		FileserverProperties props = new FileserverProperties(".");
+		FileserverService fsService = FileserverFactory.createInstance(props);
+		
+		//create dir
+		FSResult res = fsService.createDirectory("/tmp");
+		assertTrue(res.ok, res.error);
+		
+		//rename dir
+		res = fsService.renameDirectory("/tmp", "/tmp2");
+		assertTrue(res.ok, res.error);
+		
+		//create file
+		res = fsService.createFile("/tmp2/test.txt");
+		assertTrue(res.ok, res.error);
+		
+		//rename file
+		res = fsService.renameFile("/tmp2/test.txt", "/tmp2/test2.txt");
+		assertTrue(res.ok, res.error);
+		
+		//delete file
+		res = fsService.deleteFile("/tmp2/test2.txt");
+		assertTrue(res.ok, res.error);
+		
+		//delete dir
+		res = fsService.deleteDirectory("/tmp2");
+		assertTrue(res.ok, res.error);
+		
+	}
 }
