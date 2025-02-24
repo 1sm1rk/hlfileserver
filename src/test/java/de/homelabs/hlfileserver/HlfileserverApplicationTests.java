@@ -23,7 +23,7 @@ class HlfileserverApplicationTests {
 	
 	@Test
 	void checkIfPOMExists() {
-		FileserverProperties props = new FileserverProperties(".");
+		FileserverProperties props = new FileserverProperties(".", 100);
 		
 		FileserverService fsService = FileserverFactory.createInstance(props);
 		FSDirectoryResult result = fsService.listDirectory("/");
@@ -53,7 +53,7 @@ class HlfileserverApplicationTests {
 	@Test
 	void testFilesServerActions() {
 		//Basic 
-		FileserverProperties props = new FileserverProperties(".");
+		FileserverProperties props = new FileserverProperties(".", 100);
 		FileserverService fsService = FileserverFactory.createInstance(props);
 		
 		//create dir

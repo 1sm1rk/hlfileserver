@@ -1,6 +1,7 @@
 package de.homelabs.hlfileserver.service;
 
 import java.io.IOException;
+import java.nio.channels.FileChannel;
 import java.nio.file.FileSystem;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
@@ -142,8 +143,24 @@ public class FileserverFilesystemService implements FileserverService {
 
 	@Override
 	public byte[] getFileContent(String file) {
-		// TODO here goes the magic!
-		return null;
+		Path filePath = fs.getPath(props.basePath() + file);
+		
+		if (Files.exists(filePath)) {
+			FileChannel contentFileChannel = null;
+			try {
+				contentFileChannel = FileChannel.open(filePath);
+				if (contentFileChannel != null && contentFileChannel.size() < props.maxFileSize()) {
+					return Files.readAllBytes(filePath);
+				} else {
+					log.error("cannot read file: contentFileChannel = null");
+				}
+			} catch (IOException e) {
+				log.error(e.getMessage());
+				return new String().getBytes();
+			}
+			
+		}
+		return new String().getBytes();
 	}
 
 	@Override
