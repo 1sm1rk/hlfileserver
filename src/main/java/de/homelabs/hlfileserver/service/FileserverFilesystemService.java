@@ -145,14 +145,16 @@ public class FileserverFilesystemService implements FileserverService {
 	public byte[] getFileContent(String file) {
 		Path filePath = fs.getPath(props.basePath() + file);
 		
+		//filesize in MB
+		long maxFileSize = props.maxFileSize()*1024*1024;
 		if (Files.exists(filePath)) {
 			FileChannel contentFileChannel = null;
 			try {
 				contentFileChannel = FileChannel.open(filePath);
-				if (contentFileChannel != null && contentFileChannel.size() < props.maxFileSize()) {
+				if (contentFileChannel != null && contentFileChannel.size() < maxFileSize) {
 					return Files.readAllBytes(filePath);
 				} else {
-					log.error("cannot read file: contentFileChannel = null");
+					log.error("cannot read file: contentFileChannel = null or max file size: {}", maxFileSize);
 				}
 			} catch (IOException e) {
 				log.error(e.getMessage());
